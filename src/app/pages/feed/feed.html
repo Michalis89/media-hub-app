@@ -1,0 +1,127 @@
+<div class="p-4 lg:p-8 space-y-8">
+  <div class="hero bg-base-300 rounded-lg p-6 mb-6">
+    <div class="hero-content flex-col lg:flex-row">
+      <img
+        src="https://i.pravatar.cc/100?img=12"
+        class="rounded-full w-24 h-24 shadow-md"
+        alt="User Avatar"
+      />
+      <div>
+        <h1 class="text-3xl font-bold">Welcome back, Alex! 👋</h1>
+        <p class="py-2 text-sm text-base-content/70">
+          Let’s explore what’s new in your media world.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-between">
+    <h1 class="text-3xl font-bold">📰 Activity Feed</h1>
+    <select class="select select-primary w-full max-w-xs">
+      <option disabled selected>Filter Feed</option>
+      <option>Everything</option>
+      <option>New Reviews</option>
+      <option>New Favorites</option>
+      <option>Followers</option>
+      <option>Recommendations</option>
+    </select>
+  </div>
+
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Latest Activity</h2>
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6 max-h-[500px] overflow-y-auto pr-2"
+    >
+      @for(item of items; track $index){
+      <div class="card bg-base-200 shadow-md">
+        <figure>
+          <img src="https://image.tmdb.org/t/p/w500/path.jpg" alt="Sample" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">Sample Title</h2>
+          <p>Category / Description</p>
+          <div class="card-actions justify-end">
+            <div class="badge badge-outline">Tag</div>
+            <button class="btn btn-primary btn-sm">View</button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="card bg-base-200 shadow-md">
+      <div class="card-body">
+        <h2 class="card-title">🎯 Suggestions For You</h2>
+        <p>Based on your recent activity:</p>
+        <ul class="list-disc ml-5">
+          <li>Try "God of War Ragnarok"</li>
+          <li>Add "The Witcher" to your watchlist</li>
+          <li>Follow user <strong>&#64;cinemalover</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-md">
+      <div class="card-body">
+        <h2 class="card-title">📌 Featured Content</h2>
+        <p>Check out our pick of the week!</p>
+        <div class="flex gap-4">
+          <img
+            src="https://image.tmdb.org/t/p/w200/path-feature.jpg"
+            alt="Featured Content"
+            class="w-20 h-28 object-cover rounded-lg"
+          />
+          <div>
+            <h3 class="font-semibold">The Last of Us</h3>
+            <p>Drama / Post-apocalyptic / 2023</p>
+            <button class="btn btn-outline btn-sm mt-2">Watch Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card bg-base-200 shadow-md">
+      <div class="card-body">
+        <h2 class="card-title">🔥 Trending Now</h2>
+        <p>Popular among users this week:</p>
+        <ul class="list-disc ml-5">
+          <li>Cyberpunk: Edgerunners</li>
+          <li>The Bear (S2)</li>
+          <li>Fallout (Amazon Prime)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="text-xl font-semibold mb-2">Recent Interactions</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div
+        class="card bg-base-200 shadow-md max-h-[300px] overflow-y-auto pr-2"
+      >
+        <div class="card-body">
+          @for(item of items; track $index){
+          <div
+            class="flex items-start gap-3 bg-base-100 p-3 rounded-lg shadow-sm"
+          >
+            <img
+              src="https://i.pravatar.cc/40?img=11"
+              alt="User avatar"
+              class="w-10 h-10 rounded-full"
+            />
+            <div class="text-sm">
+              <p>
+                <span class="font-semibold">Alex</span> wrote a review on
+                <span class="font-semibold">Elden Ring</span>
+              </p>
+              <p class="text-xs text-base-content/70">2 min ago</p>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

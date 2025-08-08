@@ -1,0 +1,80 @@
+<div class="p-4 lg:p-8 space-y-10">
+  <!-- Hero / Welcome -->
+  <div class="hero bg-base-300 rounded-lg p-6">
+    <div class="hero-content flex-col lg:flex-row">
+      <img
+        src="https://i.pravatar.cc/100?img=33"
+        alt="Avatar"
+        class="rounded-full w-24 h-24 shadow-md"
+      />
+      <div>
+        <h1 class="text-3xl font-bold">TV Series Hub 📺</h1>
+        <p class="py-2 text-sm text-base-content/70">
+          Discover, track, and rate your favorite TV shows.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search and Filter -->
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+    <input
+      type="text"
+      placeholder="Search series..."
+      class="input input-bordered w-full max-w-md"
+    />
+    <select class="select select-primary w-full max-w-xs">
+      <option disabled selected>Filter by Genre</option>
+      <option>All</option>
+      <option>Drama</option>
+      <option>Sci-Fi</option>
+      <option>Comedy</option>
+      <option>Documentary</option>
+    </select>
+  </div>
+
+  <!-- Top Series Section -->
+  <section>
+    <h2 class="text-xl font-semibold mb-4">Top Series</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+      @for (series of tvSeries; track series.id) {
+      <div class="card bg-base-200 shadow-md">
+        <figure>
+          <img
+            src="https://image.tmdb.org/t/p/w500/{{ series.poster }}"
+            alt="{{ series.title }}"
+          />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">{{ series.title }}</h2>
+          <p class="text-sm text-base-content/70">
+            {{ series.genre }} • {{ series.seasons }} seasons
+          </p>
+          <div class="card-actions justify-end">
+            <button class="btn btn-outline btn-sm">Details</button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </section>
+
+  <!-- Weekly Spotlight -->
+  <div class="card bg-base-200 shadow-md">
+    <div class="card-body">
+      <h2 class="card-title">🌟 Weekly Spotlight</h2>
+      <div class="flex gap-4">
+        <img
+          src="https://image.tmdb.org/t/p/w200/path-to-spotlight.jpg"
+          alt="Spotlight Series"
+          class="w-20 h-28 object-cover rounded-lg"
+        />
+        <div>
+          <h3 class="font-semibold">The Bear</h3>
+          <p>Comedy-Drama / 2022–2024</p>
+          <button class="btn btn-primary btn-sm mt-2">Watch Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

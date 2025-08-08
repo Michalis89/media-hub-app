@@ -1,0 +1,29 @@
+<!-- media-recommendations.component.html -->
+<section class="space-y-4">
+  <h2 class="text-xl font-semibold text-center">
+    {{ title || "Recommendations" }}
+  </h2>
+  <div class="max-h-[600px] overflow-y-auto w-full px-4 space-y-4">
+    <ng-container>
+      @for( item of items; ; track item.id){
+      <div class="flex items-center gap-4 bg-base-200 p-4 rounded-lg shadow-sm">
+        <img
+          [src]="item.poster"
+          [alt]="item.title"
+          class="w-16 h-24 object-cover rounded-md"
+        />
+        <div class="flex-1">
+          <h3 class="font-semibold">{{ item.title }}</h3>
+          <p class="text-sm text-base-content/70">
+            {{ item.genre }}
+            @if (item.episodes) { • {{ item.episodes }} eps }
+          </p>
+        </div>
+        <button class="btn btn-outline btn-sm" (click)="onDetails(item)">
+          Details
+        </button>
+      </div>
+      }
+    </ng-container>
+  </div>
+</section>

@@ -1,0 +1,239 @@
+<div class="space-y-4 flex flex-col items-center">
+  <div class="flex flex-wrap gap-2">
+    @for (tab of tabs; track tab.key) {
+    <button
+      class="btn btn-sm"
+      [ngClass]="{ 'btn-primary': activeTab === tab.key }"
+      (click)="onTabChange(tab.key)"
+      [disabled]="tab.disabled || tab.count === 0"
+    >
+      {{ tab.label }} ({{ tab.count }})
+    </button>
+    }
+  </div>
+
+  <div class="max-h-[600px] overflow-y-auto w-full px-4 space-y-4">
+    @if (items.length > 0) { @for (item of items; track item.id) {
+    <div
+      class="bg-base-200/70 rounded-xl p-4 ring-1 ring-base-300/40 hover:ring-primary/40 transition"
+    >
+      <!-- 1: poster | 2: content(rows: top/bottom) | 3: actions -->
+      <div
+        class="grid items-center gap-3 sm:gap-4 [grid-template-columns:88px_minmax(0,1fr)_auto] [grid-template-rows:auto_auto]"
+      >
+        <!-- Poster (κολλάει αριστερά και πιάνει 2 σειρές) -->
+        <img
+          [src]="item.poster"
+          [alt]="item.title"
+          class="row-span-2 w-20 h-28 rounded-lg object-cover ring-1 ring-base-300/40"
+        />
+
+        <!-- TOP ROW: Title + meta -->
+        <div class="min-w-0">
+          <div class="flex items-baseline gap-2">
+            <h3 class="text-lg font-semibold truncate" [title]="item.title">
+              {{ item.title }}
+            </h3>
+            @if (item.year) {
+            <span class="text-sm text-base-content/60">· {{ item.year }}</span>
+            }
+          </div>
+          <p class="text-sm text-base-content/70 truncate">
+            {{ item.genre }} @if (item.episodes) { • {{ item.episodes }} eps }
+          </p>
+        </div>
+
+        <!-- Actions (δεξιά, κάθετα σε sm+, οριζόντια στο mobile) -->
+        <div
+          class="row-span-2 justify-self-end self-center flex gap-2 sm:flex-row"
+        >
+          <button
+            class="btn btn-ghost btn-xs"
+            [class.text-primary]="item.isFavorite"
+            (click)="toggleFavorite(item)"
+            aria-label="Favorite"
+          >
+            ♥
+          </button>
+
+          <div class="dropdown dropdown-end">
+            <button tabindex="0" class="btn btn-outline btn-xs">
+              {{ item.status ? (item.status | titlecase) : "Set Status" }}
+            </button>
+            <ul
+              class="dropdown-content z-[1] menu p-1 shadow bg-base-200 rounded-box w-40 text-sm"
+            >
+              @for (s of statuses; track s) {
+              <li>
+                <a (click)="changeStatus(item, s)">{{ s | titlecase }}</a>
+              </li>
+              }
+            </ul>
+          </div>
+
+          <div class="dropdown dropdown-end">
+            <!-- Κουμπί: μικρό, τετράγωνο, με tooltip -->
+            <button
+              tabindex="0"
+              class="btn btn-square btn-ghost btn-xs tooltip tooltip-left"
+              data-tip="More"
+              aria-haspopup="menu"
+              aria-expanded="false"
+            >
+              <!-- vertical dots icon -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-4 h-4 opacity-80"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <circle cx="12" cy="5" r="2" />
+                <circle cx="12" cy="12" r="2" />
+                <circle cx="12" cy="19" r="2" />
+              </svg>
+            </button>
+
+            <!-- Menu -->
+            <ul
+              class="menu menu-sm dropdown-content mt-2 p-2 w-48 rounded-xl shadow-xl bg-base-200/90 backdrop-blur border border-base-300/40 z-[1] text-sm"
+            >
+              <li>
+                <button (click)="details.emit(item)" role="menuitem">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-width="2"
+                      d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Details
+                </button>
+              </li>
+
+              <li>
+                <button (click)="toggleHated(item)" role="menuitem">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 text-warning"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  {{ item.isHated ? "Unblock" : "Block" }}
+                </button>
+              </li>
+
+              <li class="menu-title opacity-60 mt-1 mb-0">
+                <span>List</span>
+              </li>
+              <li>
+                <button
+                  (click)="changeStatus(item, 'completed')"
+                  role="menuitem"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 text-success"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  Mark as Completed
+                </button>
+              </li>
+
+              <div class="divider my-1"></div>
+
+              <li>
+                <button
+                  class="text-error hover:bg-error/10"
+                  (click)="remove(item)"
+                  role="menuitem"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 text-error"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-width="2"
+                      d="M3 6h18M8 6l1-2h6l1 2m-1 0l-1 14H9L8 6z"
+                    />
+                  </svg>
+                  Remove
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- BOTTOM ROW: ratings + progress + status -->
+        <div class="min-w-0">
+          <div
+            class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-[13px]"
+          >
+            <span class="opacity-70">Your:</span>
+            <input
+              type="number"
+              min="0"
+              max="10"
+              step="0.5"
+              class="input input-xs input-bordered w-16 text-center"
+              [value]="item.userRating ?? ''"
+              (change)="setUserRating(item, $any($event.target).valueAsNumber)"
+            />
+
+            @if (item.globalRating != null) {
+            <span class="badge badge-outline badge-xs"
+              >🌍 {{ item.globalRating | number : "1.1-1" }}/10</span
+            >
+            } @if (item.globalVotes) {
+            <span class="opacity-70">🗳 {{ item.globalVotes | number }}</span> }
+            @if (item.popularity) {
+            <span class="opacity-70">🔥 {{ item.popularity | number }}</span> }
+          </div>
+
+          @if ((item.episodes && item.lastWatched != null) || item.progress !=
+          null) {
+          <div class="mt-1 flex items-center gap-2">
+            @if (item.episodes && item.lastWatched != null) {
+            <span class="text-xs opacity-70"
+              >{{ item.lastWatched }}/{{ item.episodes }}</span
+            >
+            }
+            <div class="flex-1">
+              <progress
+                class="progress progress-primary h-1 w-full"
+                [value]="getProgressPct(item)"
+                max="100"
+              ></progress>
+            </div>
+            <span class="text-xs opacity-70 w-10 text-right"
+              >{{ getProgressPct(item) }}%</span
+            >
+          </div>
+          } @if (item.status) {
+          <span class="badge badge-sm mt-2">{{ item.status | titlecase }}</span>
+          }
+        </div>
+      </div>
+    </div>
+
+    } } @else {
+    <p class="text-center text-base-content/70 mt-4">
+      {{ emptyMessage }}
+    </p>
+    }
+  </div>
+</div>

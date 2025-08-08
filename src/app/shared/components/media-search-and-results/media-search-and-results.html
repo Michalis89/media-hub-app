@@ -1,0 +1,40 @@
+<div class="flex justify-center">
+  <input
+    type="text"
+    [placeholder]="placeholder"
+    [(ngModel)]="searchQuery"
+    class="input input-bordered w-full max-w-xl"
+  />
+</div>
+
+@if (itemsList.length > 0) {
+<section class="space-y-4 flex flex-col items-center">
+  <h2 class="text-xl font-semibold mb-4">{{ title }}</h2>
+  <div class="max-h-[600px] overflow-y-auto pr-1">
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
+      @for (item of itemsList; track item.id) {
+      <div class="card bg-base-200 shadow-md">
+        <figure>
+          <img [src]="item.poster" [alt]="item.title" />
+        </figure>
+        <div class="card-body">
+          <h2 class="card-title">{{ item.title }}</h2>
+          <p class="text-sm text-base-content/70">
+            {{ item.genre }} • {{ item.episodes }} eps
+          </p>
+          <div class="card-actions justify-end">
+            <button class="btn btn-outline btn-sm" (click)="onDetails(item)">
+              Details
+            </button>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
+} @else {
+<div class="text-center text-base-content/70 mt-4">
+  {{ emptyMessage }}
+</div>
+}

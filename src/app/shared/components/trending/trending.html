@@ -1,0 +1,23 @@
+<section class="w-full px-4 space-y-4 mt-10 overflow-hidden">
+  <h2 class="text-xl font-semibold text-center">
+    {{ title || "Trending Now" }}
+  </h2>
+  <div class="relative w-full overflow-hidden">
+    <div class="flex animate-scroll gap-6 w-max">
+      @for (item of items; track item.id) {
+      <ng-container>
+        <div class="flex-shrink-0 w-40">
+          <img
+            [src]="item.poster"
+            [alt]="item.title"
+            class="rounded-lg shadow-md w-full h-48 object-cover cursor-pointer"
+          />
+          <p class="mt-2 text-center text-sm font-medium leading-tight">
+            {{ item.title }}
+          </p>
+        </div>
+      </ng-container>
+      }
+    </div>
+  </div>
+</section>

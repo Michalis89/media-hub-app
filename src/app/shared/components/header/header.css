@@ -1,0 +1,7 @@
+:host {
+  display: block;
+}
+
+.navbar {
+  @apply sticky top-0 z-50;
+}
