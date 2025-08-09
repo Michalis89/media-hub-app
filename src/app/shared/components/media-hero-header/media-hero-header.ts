@@ -1,8 +1,9 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-media-hero-header',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './media-hero-header.html',
   styleUrl: './media-hero-header.css',
 })
@@ -11,4 +12,6 @@ export class MediaHeroHeader {
   @Input() title: string = 'Anime Library 🍥';
   @Input() subtitle: string =
     'Track your anime journey and discover new series.';
+
+  plainTitle = '';
 }

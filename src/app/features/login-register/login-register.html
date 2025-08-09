@@ -68,20 +68,49 @@
         @if(tab() === 'register'){
         <form (ngSubmit)="onRegister()" class="space-y-3">
           <div class="form-control">
-            <label class="label" for="register-name"
-              ><span class="label-text">Name</span></label
-            >
+            <label class="label" for="register-name">
+              <span class="label-text">Name</span>
+            </label>
             <input
               id="register-name"
               [(ngModel)]="register.name"
               name="name"
               class="input input-bordered w-full"
+              required
             />
           </div>
+
           <div class="form-control">
-            <label class="label" for="register-email"
-              ><span class="label-text">Email</span></label
-            >
+            <label class="label" for="register-surname">
+              <span class="label-text">Surname</span>
+            </label>
+            <input
+              id="register-surname"
+              [(ngModel)]="register.surname"
+              name="surname"
+              class="input input-bordered w-full"
+              required
+            />
+          </div>
+
+          <div class="form-control">
+            <label class="label" for="register-username">
+              <span class="label-text">Username</span>
+            </label>
+            <input
+              id="register-username"
+              [(ngModel)]="register.username"
+              name="username"
+              class="input input-bordered w-full"
+              minlength="3"
+              required
+            />
+          </div>
+
+          <div class="form-control">
+            <label class="label" for="register-email">
+              <span class="label-text">Email</span>
+            </label>
             <input
               id="register-email"
               [(ngModel)]="register.email"
@@ -91,19 +120,63 @@
               required
             />
           </div>
+
           <div class="form-control">
-            <label class="label" for="register-password"
-              ><span class="label-text">Password</span></label
-            >
+            <label class="label" for="register-password">
+              <span class="label-text">Password</span>
+            </label>
             <input
               id="register-password"
               [(ngModel)]="register.password"
               name="password"
               type="password"
               class="input input-bordered w-full"
+              minlength="6"
               required
             />
+            <label class="label">
+              <span class="label-text-alt">At least 6 characters</span>
+            </label>
           </div>
+
+          <div class="form-control">
+            <label class="label" for="register-avatar">
+              <span class="label-text">Avatar URL (optional)</span>
+            </label>
+            <input
+              id="register-avatar"
+              [(ngModel)]="register.avatarUrl"
+              name="avatarUrl"
+              type="url"
+              class="input input-bordered w-full"
+              placeholder="https://example.com/me.png"
+            />
+          </div>
+          <div class="form-control">
+            <label class="label">
+              <span class="label-text">Active modules</span>
+            </label>
+
+            <div class="grid grid-cols-2 gap-2">
+              <label
+                class="label cursor-pointer"
+                *ngFor="let mod of availableModules"
+              >
+                <span class="label-text capitalize">{{ mod }}</span>
+                <input
+                  type="checkbox"
+                  class="checkbox checkbox-sm"
+                  [checked]="register.settings?.activeModules?.includes(mod)"
+                  (change)="toggleModule(mod, $any($event.target).checked)"
+                />
+              </label>
+            </div>
+
+            <label class="label">
+              <span class="label-text-alt">Pick what you want enabled</span>
+            </label>
+          </div>
+
           <button class="btn btn-success w-full" [disabled]="loading()">
             Create account
           </button>

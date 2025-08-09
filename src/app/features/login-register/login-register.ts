@@ -5,20 +5,64 @@ import { firstValueFrom } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
 
+type UserModule =
+  | 'movies'
+  | 'anime'
+  | 'tv-series'
+  | 'books'
+  | 'games'
+  | 'music';
+
+type RegisterPayload = {
+  email: string;
+  name: string;
+  surname: string;
+  username: string;
+  password: string;
+  avatarUrl?: string;
+  settings?: {
+    activeModules: (
+      | 'movies'
+      | 'anime'
+      | 'tv-series'
+      | 'books'
+      | 'games'
+      | 'music'
+    )[];
+  };
+};
 @Component({
   selector: 'app-login-register',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './login-register.html',
-  styleUrl: './login-register.css',
-  standalone: true,
+  styleUrls: ['./login-register.css'], // ✅ fix
 })
 export class LoginRegister {
   tab = signal<'login' | 'register'>('login');
   loading = signal(false);
   error = signal<string | null>(null);
 
+  availableModules: UserModule[] = [
+    'movies',
+    'anime',
+    'tv-series',
+    'books',
+    'games',
+    'music',
+  ];
+
   login = { email: '', password: '' };
-  register = { name: '', email: '', password: '' };
+
+  register: RegisterPayload = {
+    name: '',
+    surname: '',
+    username: '',
+    email: '',
+    password: '',
+    avatarUrl: '',
+    settings: { activeModules: [] }, // ✅ init
+  };
 
   constructor(
     private readonly auth: AuthService,
@@ -32,11 +76,36 @@ export class LoginRegister {
     });
   }
 
+  toggleModule(mod: UserModule, checked: boolean) {
+    const set = new Set(this.register.settings?.activeModules ?? []);
+    checked ? set.add(mod) : set.delete(mod);
+    this.register.settings = { activeModules: Array.from(set) };
+  }
+
   async onRegister() {
-    await this.run(async () => {
-      await firstValueFrom(this.auth.register(this.register));
-      await this.router.navigateByUrl('/');
-    });
+    this.error.set(null);
+    this.loading.set(true);
+
+    const payload: RegisterPayload = {
+      name: this.register.name?.trim(),
+      surname: this.register.surname?.trim(),
+      username: this.register.username?.trim(),
+      email: this.register.email?.trim(),
+      password: this.register.password,
+      avatarUrl: this.register.avatarUrl?.trim() || undefined,
+      settings: this.register.settings?.activeModules?.length
+        ? { activeModules: this.register.settings?.activeModules ?? [] }
+        : undefined,
+    };
+
+    try {
+      await firstValueFrom(this.auth.register(payload));
+      this.tab.set('login');
+    } catch (e: any) {
+      this.error.set(e?.error?.message ?? 'Registration failed');
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   async onDevLogin() {

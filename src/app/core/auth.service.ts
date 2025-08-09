@@ -10,6 +10,25 @@ export interface LoginResponse {
   user: UserLite;
 }
 
+type RegisterPayload = {
+  email: string;
+  name: string;
+  surname: string;
+  username: string;
+  password: string;
+  avatarUrl?: string;
+  settings?: {
+    activeModules: (
+      | 'movies'
+      | 'anime'
+      | 'tv-series'
+      | 'books'
+      | 'games'
+      | 'music'
+    )[];
+  };
+};
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly API = environment.apiBase;
@@ -21,6 +40,13 @@ export class AuthService {
   constructor(private readonly http: HttpClient) {
     const tok = localStorage.getItem('mh_token');
     this.token.set(tok ?? null);
+
+    const raw = localStorage.getItem('mh_user');
+    if (raw) {
+      try {
+        this.currentUser.set(JSON.parse(raw));
+      } catch {}
+    }
 
     if (tok) {
       this.me().subscribe({ complete: () => this.ready.set(true) });
@@ -42,36 +68,55 @@ export class AuthService {
   }
 
   login(dto: { email: string; password: string }) {
-    const body = { username: dto.email, password: dto.password };
-    return this.http.post<any>(`${this.API}/auth/login`, body).pipe(
-      tap((res) => {
-        this.token.set(res.access_token);
-        this.currentUser.set(toUserLite(res.user));
+    return this.http
+      .post<LoginResponse>(`${this.API}/auth/login`, {
+        identifier: dto.email,
+        password: dto.password,
       })
-    );
+      .pipe(
+        tap((res) => {
+          this.token.set(res.access_token);
+          this.currentUser.set(toUserLite(res.user));
+        })
+      );
+  }
+
+  loginWithUsername(username: string, password: string) {
+    return this.http
+      .post<LoginResponse>(`${this.API}/auth/login`, { username, password })
+      .pipe(
+        tap((res) => {
+          this.token.set(res.access_token);
+          this.currentUser.set(toUserLite(res.user));
+        })
+      );
   }
 
   devLogin() {
     return this.login({ email: 'testuser', password: 'password123' });
   }
 
-  register(dto: { name?: string; email: string; password: string }) {
-    return this.http
-      .post(`${this.API}/users`, {
-        name: dto.name ?? '',
-        surname: '',
-        email: dto.email,
-        username: dto.email, // απλό mapping
-        password: dto.password,
-        role: 'user',
-        settings: { activeModules: [] },
-        isActive: true,
-      })
-      .pipe(
-        switchMap(() =>
-          this.login({ email: dto.email, password: dto.password })
-        )
-      );
+  register(dto: RegisterPayload) {
+    const body: RegisterPayload = {
+      email: dto.email.trim(),
+      name: (dto.name ?? '').trim(),
+      surname: (dto.surname ?? '').trim(),
+      username: (dto.username ?? dto.email).trim(),
+      password: dto.password,
+      avatarUrl: dto.avatarUrl?.trim() || undefined,
+      settings: dto.settings?.activeModules?.length
+        ? { activeModules: dto.settings.activeModules }
+        : undefined,
+    };
+
+    return this.http.post<UserLite>(`${this.API}/users`, body).pipe(
+      switchMap((user) =>
+        this.http.post<LoginResponse>(`${this.API}/auth/login`, {
+          identifier: user.username,
+          password: dto.password,
+        })
+      )
+    );
   }
 
   me() {

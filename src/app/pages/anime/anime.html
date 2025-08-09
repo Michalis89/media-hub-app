@@ -3,11 +3,11 @@
   <div class="hero bg-base-300 rounded-lg p-6">
     <div class="hero-content flex-col lg:flex-row w-full gap-8">
       <!-- Left: Avatar + Welcome -->
-      <!-- <app-media-hero-header
-        [avatar]="'https://i.pravatar.cc/100?img=8'"
-        [title]="'Anime Library 🍥'"
-        [subtitle]="'Track your anime journey and discover new series.'"
-      ></app-media-hero-header> -->
+      <app-media-hero-header
+        [avatar]="avatar()"
+        [title]="title()"
+        [subtitle]="subtitle"
+      ></app-media-hero-header>
 
       <!-- Right: Stats & Trending -->
       <div class="flex flex-col gap-4 flex-1 w-full">
