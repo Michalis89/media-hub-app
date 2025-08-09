@@ -1,17 +1,11 @@
 <div class="p-4 lg:p-8 space-y-8">
   <div class="hero bg-base-300 rounded-lg p-6 mb-6">
-    <div class="hero-content flex-col lg:flex-row">
-      <img
-        src="https://i.pravatar.cc/100?img=12"
-        class="rounded-full w-24 h-24 shadow-md"
-        alt="User Avatar"
-      />
-      <div>
-        <h1 class="text-3xl font-bold">Welcome back, Alex! 👋</h1>
-        <p class="py-2 text-sm text-base-content/70">
-          Let’s explore what’s new in your media world.
-        </p>
-      </div>
+    <div class="hero-content flex-col lg:flex-row w-full gap-8">
+      <app-media-hero-header
+        [avatar]="avatar()"
+        [title]="title()"
+        [subtitle]="subtitle"
+      ></app-media-hero-header>
     </div>
   </div>
 

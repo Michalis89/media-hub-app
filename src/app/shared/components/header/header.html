@@ -9,6 +9,7 @@
         </a>
       </div>
 
+      @if (loggedIn()) {
       <div class="flex-none lg:hidden">
         <label
           for="menu-toggle"
@@ -31,82 +32,53 @@
           </svg>
         </label>
       </div>
+      }
 
-      <div class="flex-none hidden lg:flex items-center gap-4">
+      <!-- Desktop nav -->
+      <div class="flex-none hidden lg:flex items-center gap-2">
+        @if (loggedIn()) {
         <a
           routerLink="/"
-          routerLinkActive="text-primary"
           [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="text-primary"
           class="btn btn-ghost"
           >Home</a
         >
-        <a
-          routerLink="/movies"
-          routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Movies</a
-        >
 
+        @for (item of navItems(); track item.path) {
         <a
-          routerLink="/tv-series"
-          routerLinkActive="text-primary"
           class="btn btn-ghost"
-          >Tv Series</a
-        >
-        <a
-          routerLink="/anime"
+          [routerLink]="item.path"
           routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Anime</a
         >
-        <a
-          routerLink="/music"
-          routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Music</a
-        >
-        <a
-          routerLink="/games"
-          routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Games</a
-        >
-        <a
-          routerLink="/books"
-          routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Books</a
-        >
-        @if (!loggedIn) {
-        <a
-          routerLink="/auth/login"
-          routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Login</a
-        >
-        <a
-          routerLink="/auth/register"
-          routerLinkActive="text-primary"
-          class="btn btn-ghost"
-          >Sign Up</a
-        >
-        }
+          {{ item.label }}
+        </a>
+        } }
       </div>
 
       <div class="flex-none">
+        @if (loggedIn()) {
         <div class="dropdown dropdown-end">
-          @if (loggedIn) {
-          <button class="btn btn-ghost btn-circle avatar" tabindex="0">
+          <button
+            class="btn btn-ghost btn-circle avatar"
+            tabindex="0"
+            aria-label="User menu"
+          >
             <div
               class="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2"
             >
-              <img src="https://i.pravatar.cc/100" alt="User avatar" />
-            </div></button
-          >}
-
+              <img [src]="avatar()" alt="User avatar" />
+            </div>
+          </button>
           <ul
             class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52"
           >
+            @if( user()!.username){
+            <li class="menu-title px-2 py-1">
+              {{ user()!.username }}
+            </li>
+            }
+
             <li><a routerLink="/profile">Profile</a></li>
             <li><a routerLink="/settings">Settings</a></li>
             <li>
@@ -116,24 +88,35 @@
             </li>
           </ul>
         </div>
+        }
       </div>
     </nav>
   </div>
 
+  <!-- Mobile drawer -->
   <div class="drawer-side lg:hidden z-50">
     <label for="menu-toggle" class="drawer-overlay"></label>
     <ul class="menu p-4 w-64 bg-base-200 space-y-2">
-      <li><a routerLink="/" routerLinkActive="text-primary">Home</a></li>
-      @if (!loggedIn) {
+      @if (loggedIn()) {
       <li>
-        <a routerLink="/auth/login" routerLinkActive="text-primary">Login</a>
-      </li>
-      <li>
-        <a routerLink="/auth/register" routerLinkActive="text-primary"
-          >Sign Up</a
+        <a
+          routerLink="/"
+          [routerLinkActiveOptions]="{ exact: true }"
+          routerLinkActive="text-primary"
+          (click)="closeMenu()"
+          >Home</a
         >
       </li>
-      }
+      @for (item of navItems(); track item.path) {
+      <li>
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="text-primary"
+          (click)="closeMenu()"
+          >{{ item.label }}</a
+        >
+      </li>
+      } }
     </ul>
   </div>
 </div>

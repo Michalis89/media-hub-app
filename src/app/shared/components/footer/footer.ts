@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthService } from '../../../core/auth.service';
 
 @Component({
   selector: 'app-footer',
@@ -10,10 +11,11 @@ import { Component } from '@angular/core';
 })
 export class Footer {
   currentYear: number;
-
+  private readonly auth = inject(AuthService);
   constructor() {
     this.currentYear = new Date().getFullYear();
   }
+  loggedIn = this.auth.isLoggedIn;
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }

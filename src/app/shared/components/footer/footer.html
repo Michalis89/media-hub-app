@@ -12,6 +12,7 @@
       </p>
     </div>
 
+    @if (loggedIn()) {
     <!-- Navigation -->
     <div>
       <h4 class="text-base font-semibold mb-4">Navigation</h4>
@@ -25,6 +26,7 @@
         <li><a href="/books" class="animated-link">Books</a></li>
       </ul>
     </div>
+    }
 
     <!-- Social / Contact -->
     <div>

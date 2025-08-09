@@ -3,52 +3,52 @@
   <div class="hero bg-base-300 rounded-lg p-6">
     <div class="hero-content flex-col lg:flex-row w-full gap-8">
       <!-- Left: Avatar + Welcome -->
-      <app-media-hero-header
+      <!-- <app-media-hero-header
         [avatar]="'https://i.pravatar.cc/100?img=8'"
         [title]="'Anime Library 🍥'"
         [subtitle]="'Track your anime journey and discover new series.'"
-      ></app-media-hero-header>
+      ></app-media-hero-header> -->
 
       <!-- Right: Stats & Trending -->
       <div class="flex flex-col gap-4 flex-1 w-full">
         <!-- Stats Card -->
-        <app-media-user-stats
+        <!-- <app-media-user-stats
           [stats]="userStats()"
           title="Your Stats"
           icon="📊"
-        ></app-media-user-stats>
+        ></app-media-user-stats> -->
 
-        <app-media-continue-watching
+        <!-- <app-media-continue-watching
           [items]="continueWatching()"
           title="Continue Watching"
           [emptyMessage]="'You have nothing in progress.'"
           (resume)="onResume($event)"
-        ></app-media-continue-watching>
+        ></app-media-continue-watching> -->
       </div>
     </div>
   </div>
 
   <!-- Central Search -->
   <section class="space-y-6">
-    <app-media-search-and-results
+    <!-- <app-media-search-and-results
       [items]="searchResults()"
       placeholder="Search anime..."
       emptyMessage="No anime found."
       title="Search Results"
       (itemClick)="openAnimeDetails($event)"
-    ></app-media-search-and-results>
+    ></app-media-search-and-results> -->
   </section>
 
   <!-- User Anime Lists Section -->
   <section class="space-y-6">
-    <app-media-watching-list
+    <!-- <app-media-watching-list
       [tabs]="tabs()"
       [activeTab]="activeTab()"
       [items]="items()"
       (tabChange)="onTabChange($event)"
       emptyMessage="No anime found in this list!"
       (userRate)="onUserRate($event)"
-    ></app-media-watching-list>
+    ></app-media-watching-list> -->
   </section>
 
   <!-- Favorites & Hated Section -->
@@ -56,10 +56,10 @@
     <h2 class="text-xl font-semibold text-center">💖 Favorites & 💢 Hated</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <app-media-user-lists
+      <!-- <app-media-user-lists
         title="Favorites"
         icon="💖"
-        [items]="userLists().favorites"
+        [items]="userAnimeLists().favorites"
         emptyMessage="No favorites yet."
         [maxHeight]="'max-h-[300px]'"
       ></app-media-user-lists>
@@ -67,27 +67,27 @@
       <app-media-user-lists
         title="Hated"
         icon="💢"
-        [items]="userLists().hated"
+        [items]="userAnimeLists().hated"
         emptyMessage="No hated entries."
         [maxHeight]="'max-h-[300px]'"
-      ></app-media-user-lists>
+      ></app-media-user-lists> -->
     </div>
   </section>
 
   <!-- Trending Section (Fix: true horizontal scroll carousel) -->
-  <div class="space-y-6">
+  <!-- <div class="space-y-6">
     <app-trending
       [items]="trendingAnime()"
       title="🔥 Trending Now"
     ></app-trending>
-  </div>
+  </div> -->
 
   <!-- Recommendations Section -->
-  <div class="space-y-6">
+  <!-- <div class="space-y-6">
     <app-recommendations
       [items]="recommendations()"
       title="🎯 Recommendations Based on Your Favorites"
       (details)="openAnimeDetails($event)"
     ></app-recommendations>
-  </div>
+  </div> -->
 </div>
